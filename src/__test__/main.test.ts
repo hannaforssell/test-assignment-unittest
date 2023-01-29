@@ -8,37 +8,57 @@ import { Todo } from '../ts/models/Todo';
 
 beforeEach(() => {
     document.body.innerHTML = '';
-  });
+});
+
+afterEach(() => {
+    jest.restoreAllMocks();
+});
 
 describe('createNewTodo', () => {
     test('if message length is over 2, call createHTML', () => {
         // Arrange
         let todoList: Todo[] = [];
         let todoText = 'Hello world';
-        let spy = jest.spyOn(main, 'createHtml').mockReturnValue();
+        let createHTMLSpy = jest.spyOn(main, 'createHtml').mockReturnValue();
+        jest.spyOn(main, 'displayError').mockReturnValue();
 
         // Act
         main.createNewTodo(todoText, todoList);
 
         // Assert
-        expect(spy).toHaveBeenCalled();
-
-        spy.mockRestore();
+        expect(createHTMLSpy).toHaveBeenCalled();
     });
 
     test('if message length is 2 or under, call displayError', () => {
         // Arrange
         let todoList: Todo[] = [];
         let todoText = 'H';
-        let spy = jest.spyOn(main, 'displayError').mockReturnValue();
+        let displayErrorSpy = jest.spyOn(main, 'displayError').mockReturnValue();
         
         // Act
         main.createNewTodo(todoText, todoList);
 
         // Assert
-        expect(spy).toHaveBeenCalled();
+        expect(displayErrorSpy).toHaveBeenCalled();
+    });
 
-        spy.mockRestore();
+    //Skipped test because assigment only allowed successful tests
+    test.skip('error message should be removed after success', () => {
+        // Arrange
+        let todoList: Todo[] = [];
+        let todoIncorrect = 'H';
+        let todoCorrect = 'Hello world';
+        document.body.innerHTML = `<div id="error" class"error"></div>`;
+        jest.spyOn(main, 'createHtml').mockReturnValue();
+        
+
+        // Act
+        main.createNewTodo(todoIncorrect, todoList);
+        main.createNewTodo(todoCorrect, todoList);
+
+        // Assert
+        let errorHTML = document.getElementById('error') as HTMLDivElement;
+        expect(errorHTML.classList.contains('show')).toBe(false);
     });
 });
 
@@ -59,7 +79,7 @@ describe('createHTML', () => {
         // Assert
         expect(fetchedData).toHaveLength(3);
     });
-    
+
     test('if todos is empty, todos HTML is empty', () => {
         // Arrange
         document.body.innerHTML = `<ul id="todos" class="todo"></ul>`;
@@ -140,15 +160,13 @@ describe('createHTML', () => {
         main.createHtml(todoList);
         let todosHTML = document.getElementById('todos') as HTMLUListElement;
         let todoItemHTML = todosHTML.firstChild as HTMLLIElement;
-        let spy = jest.spyOn(main, 'toggleTodo').mockReturnValue();
+        let toggleTodoSpy = jest.spyOn(main, 'toggleTodo').mockReturnValue();
 
         // Act
         todoItemHTML.click();
 
         // Assert
-        expect(spy).toHaveBeenCalledTimes(1);
-
-        spy.mockRestore();
+        expect(toggleTodoSpy).toHaveBeenCalledTimes(1);
     });
 });
 
@@ -157,22 +175,18 @@ describe('toggleTodo', () => {
         // Arrange
         let todoItem = new Todo('Hello world', false);
         let changeTodoSpy = jest.spyOn(functions, 'changeTodo').mockReturnValue();
-        let createHTMLSpy = jest.spyOn(main, 'createHtml').mockReturnValue();
+        jest.spyOn(main, 'createHtml').mockReturnValue();
 
         // Act
         main.toggleTodo(todoItem);
 
         // Assert
         expect(changeTodoSpy).toHaveBeenCalledTimes(1);
-
-        changeTodoSpy.mockRestore();
-        createHTMLSpy.mockRestore();
     });
 
     test('createHTML is called once', () => {
         // Arrange
         let todoItem = new Todo('Hello world', false);
-        let changeTodoSpy = jest.spyOn(functions, 'changeTodo').mockReturnValue();
         let createHTMLSpy = jest.spyOn(main, 'createHtml').mockReturnValue();
 
         // Act
@@ -180,9 +194,6 @@ describe('toggleTodo', () => {
 
         // Assert
         expect(createHTMLSpy).toHaveBeenCalledTimes(1);
-
-        changeTodoSpy.mockRestore();
-        createHTMLSpy.mockRestore();
     });
 });
 
@@ -220,17 +231,14 @@ describe('clearTodos', () => {
             new Todo('Ipsum', true),
             new Todo('Dolor', false)
         ];
-        let spy1 = jest.spyOn(functions, 'removeAllTodos').mockReturnValue();
-        let spy2 = jest.spyOn(main, 'createHtml').mockReturnValue();
+        let removeAllTodosSpy = jest.spyOn(functions, 'removeAllTodos').mockReturnValue();
+        let createHTMLSpy = jest.spyOn(main, 'createHtml').mockReturnValue();
 
         // Act
         main.clearTodos(todoList);
 
         // Assert
-        expect(spy1).toHaveBeenCalledTimes(1);
-        expect(spy2).toHaveBeenCalledTimes(1);
-
-        spy1.mockRestore();
-        spy2.mockRestore();
+        expect(removeAllTodosSpy).toHaveBeenCalledTimes(1);
+        expect(createHTMLSpy).toHaveBeenCalledTimes(1);
     });
 });

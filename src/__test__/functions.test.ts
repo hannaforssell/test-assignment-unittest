@@ -115,3 +115,4 @@ describe('sortList', () => {
         expect(todoList[2].text).toBe('Ipsum');
     });
 });
+

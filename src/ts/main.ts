@@ -32,7 +32,6 @@ export function createNewTodo(todoText: string, todos: Todo[]) {
 }
 
 export function createHtml(todos: Todo[]) {
-  sortList(todos);
   localStorage.setItem("todos", JSON.stringify(todos));
 
   let todosContainer: HTMLUListElement = document.getElementById(
@@ -82,4 +81,4 @@ export function clearTodos(todos: Todo[]) {
   exports.createHtml(todos);
 }
 
-//createHtml(todos);
+// createHtml(todos);
