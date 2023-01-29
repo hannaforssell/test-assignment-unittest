@@ -1,4 +1,4 @@
-import { addTodo, changeTodo, removeAllTodos } from "../ts/functions";
+import { addTodo, changeTodo, removeAllTodos, sortList } from "../ts/functions";
 import { Todo } from "../ts/models/Todo";
 
 describe('addTodo', () => {
@@ -77,5 +77,41 @@ describe('removeAllTodos', () => {
 
         // Assert
         expect(todoList.length).toBe(0);
+    });
+});
+
+describe('sortList', () => {
+    test('arranges undone list items in alphabetical order', () => {
+        // Arrange
+        let todoList: Todo[] = [
+            new Todo('Lorem', false),
+            new Todo('Ipsum', false),
+            new Todo('Dolor', false)
+        ];
+
+        // Act
+        sortList(todoList);
+
+        // Assert
+        expect(todoList[0].text).toBe('Dolor');
+        expect(todoList[1].text).toBe('Ipsum');
+        expect(todoList[2].text).toBe('Lorem');
+    });
+
+    test('done state on list items takes presidence over alphabetical order', () => {
+        // Arrange
+        let todoList: Todo[] = [
+            new Todo('Lorem', false),
+            new Todo('Ipsum', true),
+            new Todo('Dolor', false)
+        ];
+
+        // Act
+        sortList(todoList);
+
+        // Assert
+        expect(todoList[0].text).toBe('Dolor');
+        expect(todoList[1].text).toBe('Lorem');
+        expect(todoList[2].text).toBe('Ipsum');
     });
 });

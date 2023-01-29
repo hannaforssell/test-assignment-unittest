@@ -59,6 +59,7 @@ describe('createHTML', () => {
         // Assert
         expect(fetchedData).toHaveLength(3);
     });
+    
     test('if todos is empty, todos HTML is empty', () => {
         // Arrange
         document.body.innerHTML = `<ul id="todos" class="todo"></ul>`;

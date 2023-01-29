@@ -1,4 +1,4 @@
-import { addTodo, changeTodo, removeAllTodos } from "./functions";
+import { addTodo, changeTodo, removeAllTodos, sortList } from "./functions";
 import { Todo } from "./models/Todo";
 
 let todos: Todo[] = JSON.parse(localStorage.getItem("todos") || "[]");
@@ -32,6 +32,7 @@ export function createNewTodo(todoText: string, todos: Todo[]) {
 }
 
 export function createHtml(todos: Todo[]) {
+  sortList(todos);
   localStorage.setItem("todos", JSON.stringify(todos));
 
   let todosContainer: HTMLUListElement = document.getElementById(
