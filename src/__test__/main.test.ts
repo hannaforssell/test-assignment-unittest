@@ -14,6 +14,22 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 
+test('clicking sort list button calls sortList', () => {
+    // Arrange
+    document.body.innerHTML = `<button id="sortList">Sortera lista</button>`;
+    let sortBtn = document.getElementById('sortList') as HTMLButtonElement;
+    let sortListSpy = jest.spyOn(functions, 'sortList').mockReturnValue();
+    let createHTMLSpy = jest.spyOn(main, 'createHtml').mockReturnValue();
+    main.addListenerToSortBtn();
+
+    // Act
+    sortBtn.click();
+
+    // Assert
+    expect(sortListSpy).toHaveBeenCalledTimes(1);
+    expect(createHTMLSpy).toHaveBeenCalledTimes(1);
+});
+
 describe('createNewTodo', () => {
     test('if message length is over 2, call createHTML', () => {
         // Arrange

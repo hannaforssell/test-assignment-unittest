@@ -21,6 +21,14 @@ document.getElementById("clearTodos")?.addEventListener("click", () => {
   }
 );
 
+export function addListenerToSortBtn() {
+  let sortBtn = document.getElementById('sortList') as HTMLButtonElement;
+  sortBtn.addEventListener('click', () => {
+    sortList(todos);
+    exports.createHtml(todos);
+  });
+}
+
 export function createNewTodo(todoText: string, todos: Todo[]) {
   let result = addTodo(todoText, todos);
 
@@ -82,3 +90,4 @@ export function clearTodos(todos: Todo[]) {
 }
 
 // createHtml(todos);
+//addListenerToSortBtn();
