@@ -90,4 +90,4 @@ export function clearTodos(todos: Todo[]) {
 }
 
 // createHtml(todos);
-//addListenerToSortBtn();
+// addListenerToSortBtn();
